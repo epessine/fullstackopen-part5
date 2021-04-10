@@ -11,8 +11,18 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    );  
+      setBlogs(blogs)
+    );
+  }, []);
+
+  useEffect(() => {
+    const user = JSON.parse(window.localStorage.getItem('loggedBlogListUser'));
+
+    if (user) {
+      setUser(user);
+      setUsername('');
+      setPassword('');
+    }
   }, []);
 
   return (
@@ -29,6 +39,7 @@ const App = () => {
         <BlogList 
           blogs={blogs}
           user={user}
+          setUser={setUser}
         ></BlogList>
       }
     </div>

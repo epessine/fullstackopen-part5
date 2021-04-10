@@ -8,8 +8,14 @@ const Login = ({ username, password, setUsername, setPassword, setUser }) => {
     try {
       const user = await loginService.login({
         username,
-        password,
+        password
       });
+
+      window.localStorage.setItem(
+        'loggedBlogListUser',
+        JSON.stringify(user)
+      );
+
       setUser(user);
       setUsername('');
       setPassword('');
