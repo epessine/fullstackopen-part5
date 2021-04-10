@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs';
 
-const BlogForm = ({ blogs, setBlogs }) => {
+const BlogForm = ({ blogs, setBlogs, setNotification }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
 
   const handleCreateBlog = async (e) => {
     e.preventDefault();
-
+    
     try {
       const newBlog = await blogService.create({
         title: title,
@@ -16,8 +16,22 @@ const BlogForm = ({ blogs, setBlogs }) => {
         url: url
       });
       setBlogs(blogs.concat(newBlog));
+
+      setNotification({
+        message: `new blog '${newBlog.title}' by ${newBlog.author || 'anonymous'} added`,
+        status: 'success'
+      });
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
     } catch (error) {
-      console.log(error);
+      setNotification({
+        message: error.message,
+        status: 'error'
+      });
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
     }
   };
 
@@ -26,6 +40,7 @@ const BlogForm = ({ blogs, setBlogs }) => {
       <h2>create new</h2>
       <label htmlFor="Title">title: </label>
       <input
+        required
         type="text"
         value={title}
         name="Title"
@@ -42,6 +57,7 @@ const BlogForm = ({ blogs, setBlogs }) => {
       <br/>
       <label htmlFor="Url">url: </label>
       <input
+        required
         type="text"
         value={url}
         name="Url"

@@ -2,7 +2,7 @@ import React from 'react';
 import loginService from '../services/login';
 import blogService from '../services/blogs';
 
-const Login = ({ username, password, setUsername, setPassword, setUser }) => {
+const Login = ({ username, password, setUsername, setPassword, setUser, setNotification }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     
@@ -21,19 +21,27 @@ const Login = ({ username, password, setUsername, setPassword, setUser }) => {
       setUser(user);
       setUsername('');
       setPassword('');
-      console.log('logged in!');
+      
+      setNotification({
+        message: `${user.name} logged in!`,
+        status: 'success'
+      });
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
     } catch (error) {
-      console.log(error);
-      //setErrorMessage('Wrong credentials');
-      //setTimeout(() => {
-      //  setErrorMessage(null);
-      //}, 5000);
+      setNotification({
+        message: 'wrong username or password',
+        status: 'error'
+      });
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
     }
   };
 
   return (
     <form onSubmit={handleLogin}>
-      <h2>login</h2>
       <div>
         <label htmlFor="Username">username </label>
         <input
