@@ -19,6 +19,7 @@ const App = () => {
     const user = JSON.parse(window.localStorage.getItem('loggedBlogListUser'));
 
     if (user) {
+      blogService.setToken(user.token);
       setUser(user);
       setUsername('');
       setPassword('');
@@ -38,6 +39,7 @@ const App = () => {
         : 
         <BlogList 
           blogs={blogs}
+          setBlogs={setBlogs}
           user={user}
           setUser={setUser}
         ></BlogList>
