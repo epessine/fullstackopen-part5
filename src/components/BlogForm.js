@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs';
 
-const BlogForm = ({ blogs, setBlogs, setNotification }) => {
+const BlogForm = ({ blogs, setBlogs, setNotification, blogFormRef }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -24,6 +24,7 @@ const BlogForm = ({ blogs, setBlogs, setNotification }) => {
       setTimeout(() => {
         setNotification(null);
       }, 5000);
+      blogFormRef.current.toggleVisibility();
     } catch (error) {
       setNotification({
         message: error.message,

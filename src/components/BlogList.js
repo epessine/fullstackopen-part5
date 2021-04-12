@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Blog from './Blog';
 import BlogForm from './BlogForm';
+import Togglable from './Togglable';
 
 const BlogList = ({ blogs, setBlogs, user, setUser, setNotification }) => {
   const handleLogout = () => {
@@ -8,23 +9,30 @@ const BlogList = ({ blogs, setBlogs, user, setUser, setNotification }) => {
     setUser(null);
     console.log('logged out!');
   };
+  const blogFormRef = useRef();
 
   return (
     <div>
-      <p> 
+      <p>
         {user.name} logged in 
         <button onClick={handleLogout}>logout</button>
       </p>
-      <BlogForm 
-        setBlogs={setBlogs}
-        blogs={blogs}
-        setNotification={setNotification}
-      ></BlogForm>
+      <Togglable
+        buttonLabel={'new note'}
+        ref={blogFormRef}
+      >
+        <BlogForm 
+          setBlogs={setBlogs}
+          blogs={blogs}
+          setNotification={setNotification}
+          blogFormRef={blogFormRef}
+        />
+      </Togglable>
       {blogs.map(blog => 
         <Blog 
           key={blog.id} 
           blog={blog}
-        ></Blog>
+        />
       )}
     </div>
   );

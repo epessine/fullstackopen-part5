@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import BlogList from './components/BlogList';
-import Login from './components/Login';
+import LoginForm from './components/LoginForm';
 import Notification from './components/Notification';
 import blogService from './services/blogs';
 
@@ -37,16 +37,16 @@ const App = () => {
       }
       <Notification
         notification={notification}
-      ></Notification>
+      />
       {user === null ? 
-        <Login 
+        <LoginForm 
           username={username} 
           setUsername={setUsername} 
           password={password} 
           setPassword={setPassword} 
           setUser={setUser}
           setNotification={setNotification}
-        ></Login>
+        />
         : 
         <BlogList 
           blogs={blogs}
@@ -54,7 +54,7 @@ const App = () => {
           user={user}
           setUser={setUser}
           setNotification={setNotification}
-        ></BlogList>
+        />
       }
     </div>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import loginService from '../services/login';
 import blogService from '../services/blogs';
 
-const Login = ({ username, password, setUsername, setPassword, setUser, setNotification }) => {
+const LoginForm = ({ username, password, setUsername, setPassword, setUser, setNotification }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     
@@ -65,4 +65,4 @@ const Login = ({ username, password, setUsername, setPassword, setUser, setNotif
   );
 };
 
-export default Login;
+export default LoginForm;
