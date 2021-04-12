@@ -18,7 +18,7 @@ const BlogList = ({ blogs, setBlogs, user, setUser, setNotification }) => {
         <button onClick={handleLogout}>logout</button>
       </p>
       <Togglable
-        buttonLabel={'new note'}
+        buttonLabel={'create new blog'}
         ref={blogFormRef}
       >
         <BlogForm 
