@@ -6,7 +6,7 @@ import blogService from './services/blogs';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState('');   
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState(null);
@@ -32,25 +32,25 @@ const App = () => {
 
   return (
     <div>
-      {user === null ? 
+      {user === null ?
         <h2>login</h2>
-        : 
+        :
         <h2>blogs</h2>
       }
       <Notification
         notification={notification}
       />
-      {user === null ? 
-        <LoginForm 
-          username={username} 
-          setUsername={setUsername} 
-          password={password} 
-          setPassword={setPassword} 
+      {user === null ?
+        <LoginForm
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
           setUser={setUser}
           setNotification={setNotification}
         />
-        : 
-        <BlogList 
+        :
+        <BlogList
           blogs={blogs}
           setBlogs={setBlogs}
           user={user}

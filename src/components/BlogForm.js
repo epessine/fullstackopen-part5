@@ -8,7 +8,7 @@ const BlogForm = ({ blogs, setBlogs, setNotification, blogFormRef }) => {
 
   const handleCreateBlog = async (e) => {
     e.preventDefault();
-    
+
     try {
       const newBlog = await blogService.create({
         title: title,

@@ -14,23 +14,23 @@ const BlogList = ({ blogs, setBlogs, user, setUser, setNotification }) => {
   return (
     <div>
       <p>
-        {user.name} logged in 
+        {user.name} logged in
         <button onClick={handleLogout}>logout</button>
       </p>
       <Togglable
         buttonLabel={'create new blog'}
         ref={blogFormRef}
       >
-        <BlogForm 
+        <BlogForm
           setBlogs={setBlogs}
           blogs={blogs}
           setNotification={setNotification}
           blogFormRef={blogFormRef}
         />
       </Togglable>
-      {blogs.map(blog => 
-        <Blog 
-          key={blog.id} 
+      {blogs.map(blog =>
+        <Blog
+          key={blog.id}
           blog={blog}
           setBlogs={setBlogs}
           blogs={blogs}

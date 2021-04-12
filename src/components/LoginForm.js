@@ -5,7 +5,7 @@ import blogService from '../services/blogs';
 const LoginForm = ({ username, password, setUsername, setPassword, setUser, setNotification }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     try {
       const user = await loginService.login({
         username,
@@ -16,12 +16,12 @@ const LoginForm = ({ username, password, setUsername, setPassword, setUser, setN
         'loggedBlogListUser',
         JSON.stringify(user)
       );
-      
+
       blogService.setToken(user.token);
       setUser(user);
       setUsername('');
       setPassword('');
-      
+
       setNotification({
         message: `${user.name} logged in!`,
         status: 'success'
