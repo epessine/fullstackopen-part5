@@ -18,7 +18,7 @@ const Blog = ({ blog, blogs, setBlogs, setNotification }) => {
   const addLike = async (e) => {
     e.preventDefault();
     try {
-      await blogService.likeBlog(blog.id, {
+      await blogService.like(blog.id, {
         likes: blog.likes + 1
       });
       setBlogs(
@@ -43,6 +43,23 @@ const Blog = ({ blog, blogs, setBlogs, setNotification }) => {
     }
   };
 
+  const destroyBlog = async (e) => {
+    e.preventDefault();
+    if (!window.confirm(`delete '${blog.title}'?`)) return;
+    try {
+      await blogService.destroy(blog.id);
+      setBlogs(blogs.filter(savedBlog => savedBlog !== blog));
+    } catch (exception) {
+      setNotification({
+        message: exception.message,
+        status: 'error'
+      });
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
+    }
+  };
+
   return (
     <div style={blogStyle}>
       {blog.title}
@@ -51,7 +68,8 @@ const Blog = ({ blog, blogs, setBlogs, setNotification }) => {
         <div>
           {blog.url} <br/>
           {blog.likes} <button onClick={addLike}>like</button><br/>
-          {blog.author}
+          {blog.author} <br/>
+          <button onClick={destroyBlog}>remove</button>
         </div>
       )}
     </div>

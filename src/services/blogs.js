@@ -18,7 +18,13 @@ const create = async blog => {
   return res.data;
 };
 
-const likeBlog = async (id, blog) => {
+const destroy = async (id) => {
+  const config = { headers: { Authorization: token } };
+  const res = await axios.delete(`${baseUrl}/${id}`, config);
+  return res.data;
+};
+
+const like = async (id, blog) => {
   const config = { headers: { Authorization: token } };
   const res = await axios.put(`${baseUrl}/${id}`, blog, config);
   return res.data;
@@ -28,5 +34,6 @@ export default {
   setToken,
   getAll,
   create,
-  likeBlog
+  destroy,
+  like
 };
