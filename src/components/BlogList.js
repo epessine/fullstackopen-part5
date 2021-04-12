@@ -32,6 +32,9 @@ const BlogList = ({ blogs, setBlogs, user, setUser, setNotification }) => {
         <Blog 
           key={blog.id} 
           blog={blog}
+          setBlogs={setBlogs}
+          blogs={blogs}
+          setNotification={setNotification}
         />
       )}
     </div>
