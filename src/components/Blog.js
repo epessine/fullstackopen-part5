@@ -66,9 +66,9 @@ const Blog = ({ blog, blogs, setBlogs, setNotification }) => {
       <button onClick={toggleBlogDetails}>{visible ? 'hide' : 'view'}</button>
       {visible && (
         <div>
-          {blog.url} <br/>
-          {blog.likes} <button onClick={addLike}>like</button><br/>
-          {blog.author} <br/>
+          <span>{blog.url} <br/></span>
+          <span id="likes-counter">{blog.likes} </span><button onClick={addLike}>like</button><br/>
+          <span>{blog.author} <br/></span>
           <button onClick={destroyBlog}>remove</button>
         </div>
       )}
