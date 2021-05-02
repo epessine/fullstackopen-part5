@@ -11,7 +11,10 @@ const reducer = (state = [], { type, data }) => {
   case 'LIKE_BLOG':
     return state.map(blog => {
       if (blog.id === data) {
-        blog.likes++;
+        return {
+          ...blog,
+          likes: blog.likes + 1
+        };
       }
       return blog;
     });

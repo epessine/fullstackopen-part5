@@ -1,25 +1,27 @@
 import React, { useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { logoutUser } from '../reducers/userReducer';
-import Blog from './Blog';
+import { useSelector } from 'react-redux';
 import BlogForm from './BlogForm';
 import Togglable from './Togglable';
+import { Link } from 'react-router-dom';
 
-const BlogList = ({ setBlogs, user }) => {
-  const dispatch = useDispatch();
+const BlogList = ({ setBlogs }) => {
   const blogs = useSelector(state =>
     state.blogs.sort((a, b) => {
       return b.likes - a.likes;
     })
   );
   const blogFormRef = useRef();
+  const blogStyle = {
+    width: '30%',
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5
+  };
 
   return (
     <div>
-      <p>
-        {user.name} logged in
-        <button onClick={() => { dispatch(logoutUser()); }}>logout</button>
-      </p>
       <Togglable
         buttonLabel={'create new blog'}
         ref={blogFormRef}
@@ -31,10 +33,9 @@ const BlogList = ({ setBlogs, user }) => {
         />
       </Togglable>
       {blogs.map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-        />
+        <p key={blog.id} style={blogStyle}>
+          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+        </p>
       )}
     </div>
   );

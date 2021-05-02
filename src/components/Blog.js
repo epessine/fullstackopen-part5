@@ -1,27 +1,21 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { setSuccessNotification, setErrorNotification } from '../reducers/notificationReducer';
 import { likeBlog, deleteBlog } from '../reducers/blogsReducer';
+import { useParams, useHistory } from 'react-router-dom';
 
-const Blog = ({ blog }) => {
+const Blog = () => {
+  const { id } = useParams();
+  const history = useHistory();
   const dispatch = useDispatch();
-  const blogStyle = {
-    width: '30%',
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  };
-  const [visible, setVisible] = useState(false);
-  const toggleBlogDetails = (e) => {
-    e.preventDefault();
-    setVisible(!visible);
-  };
+  const blog = useSelector(state =>
+    state.blogs.find(blog => blog.id === id)
+  );
+
   const addLike = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(likeBlog(blog.id));
+      await dispatch(likeBlog(id));
     } catch (exception) {
       dispatch(setErrorNotification(exception.message, 5000));
     }
@@ -36,23 +30,22 @@ const Blog = ({ blog }) => {
         `blog '${blog.title}' by ${blog.author || 'anonymous'} deleted`,
         5000
       ));
+      history.push('/');
     } catch (exception) {
       dispatch(setErrorNotification(exception.message, 5000));
     }
   };
 
+  if (!blog) return null;
   return (
-    <div style={blogStyle}>
-      {blog.title}
-      <button onClick={toggleBlogDetails}>{visible ? 'hide' : 'view'}</button>
-      {visible && (
-        <div>
-          <span>{blog.url} <br/></span>
-          <span id="likes-counter">{blog.likes} </span><button onClick={addLike}>like</button><br/>
-          <span>{blog.author} <br/></span>
-          <button onClick={destroyBlog}>remove</button>
-        </div>
-      )}
+    <div>
+      <h2> {`${blog.title} by ${blog.author}`} </h2>
+      <span>
+        <a href={blog.url}>{blog.url}</a><br/>
+      </span>
+      <span id="likes-counter">{blog.likes}</span><button onClick={addLike}>like</button><br/>
+      <span>{`added by ${blog.user.name}`}<br/></span>
+      <button onClick={destroyBlog}>remove</button>
     </div>
   );
 };

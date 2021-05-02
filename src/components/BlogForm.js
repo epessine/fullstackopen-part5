@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setSuccessNotification, setErrorNotification } from '../reducers/notificationReducer';
-import { addBlog } from '../reducers/blogsReducer';
+import { addBlog, initializeBlogs } from '../reducers/blogsReducer';
 
 const BlogForm = ({ blogFormRef }) => {
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ const BlogForm = ({ blogFormRef }) => {
         `new blog '${title}' by ${author || 'anonymous'} added`,
         5000
       ));
+      await dispatch(initializeBlogs());
       blogFormRef.current.toggleVisibility();
     } catch (error) {
       dispatch(setErrorNotification(error.message, 5000));
