@@ -24,9 +24,14 @@ const destroy = async (id) => {
   return res.data;
 };
 
-const like = async (id, blog) => {
+const like = async (id) => {
   const config = { headers: { Authorization: token } };
-  const res = await axios.put(`${baseUrl}/${id}`, blog, config);
+  const blog = await axios.get(`${baseUrl}/${id}`);
+  const res = await axios.put(
+    `${baseUrl}/${id}`,
+    { ...blog, likes: blog.likes + 1 },
+    config
+  );
   return res.data;
 };
 

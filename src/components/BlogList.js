@@ -1,21 +1,24 @@
 import React, { useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { logoutUser } from '../reducers/userReducer';
 import Blog from './Blog';
 import BlogForm from './BlogForm';
 import Togglable from './Togglable';
 
-const BlogList = ({ blogs, setBlogs, user, setUser, setNotification }) => {
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogListUser');
-    setUser(null);
-    console.log('logged out!');
-  };
+const BlogList = ({ setBlogs, user }) => {
+  const dispatch = useDispatch();
+  const blogs = useSelector(state =>
+    state.blogs.sort((a, b) => {
+      return b.likes - a.likes;
+    })
+  );
   const blogFormRef = useRef();
 
   return (
     <div>
       <p>
         {user.name} logged in
-        <button onClick={handleLogout}>logout</button>
+        <button onClick={() => { dispatch(logoutUser()); }}>logout</button>
       </p>
       <Togglable
         buttonLabel={'create new blog'}
@@ -24,7 +27,6 @@ const BlogList = ({ blogs, setBlogs, user, setUser, setNotification }) => {
         <BlogForm
           setBlogs={setBlogs}
           blogs={blogs}
-          setNotification={setNotification}
           blogFormRef={blogFormRef}
         />
       </Togglable>
@@ -32,9 +34,6 @@ const BlogList = ({ blogs, setBlogs, user, setUser, setNotification }) => {
         <Blog
           key={blog.id}
           blog={blog}
-          setBlogs={setBlogs}
-          blogs={blogs}
-          setNotification={setNotification}
         />
       )}
     </div>

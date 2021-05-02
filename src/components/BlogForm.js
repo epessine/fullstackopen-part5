@@ -1,38 +1,25 @@
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
+import { useDispatch } from 'react-redux';
+import { setSuccessNotification, setErrorNotification } from '../reducers/notificationReducer';
+import { addBlog } from '../reducers/blogsReducer';
 
-const BlogForm = ({ blogs, setBlogs, setNotification, blogFormRef }) => {
+const BlogForm = ({ blogFormRef }) => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
 
   const handleCreateBlog = async (e) => {
     e.preventDefault();
-
     try {
-      const newBlog = await blogService.create({
-        title: title,
-        author: author,
-        url: url
-      });
-      setBlogs(blogs.concat(newBlog));
-
-      setNotification({
-        message: `new blog '${newBlog.title}' by ${newBlog.author || 'anonymous'} added`,
-        status: 'success'
-      });
-      setTimeout(() => {
-        setNotification(null);
-      }, 5000);
+      await dispatch(addBlog({ title, author, url }));
+      dispatch(setSuccessNotification(
+        `new blog '${title}' by ${author || 'anonymous'} added`,
+        5000
+      ));
       blogFormRef.current.toggleVisibility();
     } catch (error) {
-      setNotification({
-        message: error.message,
-        status: 'error'
-      });
-      setTimeout(() => {
-        setNotification(null);
-      }, 5000);
+      dispatch(setErrorNotification(error.message, 5000));
     }
   };
 

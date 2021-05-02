@@ -1,33 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import BlogList from './components/BlogList';
 import LoginForm from './components/LoginForm';
 import Notification from './components/Notification';
-import blogService from './services/blogs';
+import { initializeBlogs } from './reducers/blogsReducer';
+import { initializeUser } from './reducers/userReducer';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
-  const [notification, setNotification] = useState(null);
 
   useEffect(async () => {
-    const blogs = await blogService.getAll();
-    blogs.sort((a, b) => {
-      return b.likes - a.likes;
-    });
-    setBlogs(blogs);
+    dispatch(initializeBlogs());
   }, []);
-
   useEffect(() => {
-    const user = JSON.parse(window.localStorage.getItem('loggedBlogListUser'));
-
-    if (user) {
-      blogService.setToken(user.token);
-      setUser(user);
-      setUsername('');
-      setPassword('');
-    }
+    dispatch(initializeUser());
+    setUsername('');
+    setPassword('');
   }, []);
 
   return (
@@ -37,25 +28,17 @@ const App = () => {
         :
         <h2>blogs</h2>
       }
-      <Notification
-        notification={notification}
-      />
+      <Notification/>
       {user === null ?
         <LoginForm
           username={username}
           setUsername={setUsername}
           password={password}
           setPassword={setPassword}
-          setUser={setUser}
-          setNotification={setNotification}
         />
         :
         <BlogList
-          blogs={blogs}
-          setBlogs={setBlogs}
           user={user}
-          setUser={setUser}
-          setNotification={setNotification}
         />
       }
     </div>

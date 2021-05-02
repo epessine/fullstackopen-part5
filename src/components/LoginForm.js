@@ -1,42 +1,20 @@
 import React from 'react';
-import loginService from '../services/login';
-import blogService from '../services/blogs';
+import { useDispatch } from 'react-redux';
+import { setSuccessNotification, setErrorNotification } from '../reducers/notificationReducer';
+import { loginUser } from '../reducers/userReducer';
 
-const LoginForm = ({ username, password, setUsername, setPassword, setUser, setNotification }) => {
+const LoginForm = ({ username, password, setUsername, setPassword }) => {
+  const dispatch = useDispatch();
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const user = await loginService.login({
-        username,
-        password
-      });
-
-      window.localStorage.setItem(
-        'loggedBlogListUser',
-        JSON.stringify(user)
-      );
-
-      blogService.setToken(user.token);
-      setUser(user);
+      await dispatch(loginUser(username, password));
       setUsername('');
       setPassword('');
-
-      setNotification({
-        message: `${user.name} logged in!`,
-        status: 'success'
-      });
-      setTimeout(() => {
-        setNotification(null);
-      }, 5000);
+      dispatch(setSuccessNotification(`${username} logged in!`, 5000));
     } catch (error) {
-      setNotification({
-        message: 'wrong username or password',
-        status: 'error'
-      });
-      setTimeout(() => {
-        setNotification(null);
-      }, 5000);
+      dispatch(setErrorNotification('wrong username or password', 5000));
     }
   };
 

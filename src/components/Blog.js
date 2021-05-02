@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
+import { useDispatch } from 'react-redux';
+import { setSuccessNotification, setErrorNotification } from '../reducers/notificationReducer';
+import { likeBlog, deleteBlog } from '../reducers/blogsReducer';
 
-const Blog = ({ blog, blogs, setBlogs, setNotification }) => {
+const Blog = ({ blog }) => {
+  const dispatch = useDispatch();
   const blogStyle = {
     width: '30%',
     paddingTop: 10,
@@ -18,28 +21,9 @@ const Blog = ({ blog, blogs, setBlogs, setNotification }) => {
   const addLike = async (e) => {
     e.preventDefault();
     try {
-      await blogService.like(blog.id, {
-        likes: blog.likes + 1
-      });
-      setBlogs(
-        blogs.map(savedBlog => {
-          if (savedBlog === blog) {
-            savedBlog.likes++;
-          }
-          return savedBlog;
-        })
-          .sort((a, b) => {
-            return b.likes - a.likes;
-          })
-      );
+      await dispatch(likeBlog(blog.id));
     } catch (exception) {
-      setNotification({
-        message: exception.message,
-        status: 'error'
-      });
-      setTimeout(() => {
-        setNotification(null);
-      }, 5000);
+      dispatch(setErrorNotification(exception.message, 5000));
     }
   };
 
@@ -47,16 +31,13 @@ const Blog = ({ blog, blogs, setBlogs, setNotification }) => {
     e.preventDefault();
     if (!window.confirm(`delete '${blog.title}'?`)) return;
     try {
-      await blogService.destroy(blog.id);
-      setBlogs(blogs.filter(savedBlog => savedBlog !== blog));
+      await dispatch(deleteBlog(blog.id));
+      dispatch(setSuccessNotification(
+        `blog '${blog.title}' by ${blog.author || 'anonymous'} deleted`,
+        5000
+      ));
     } catch (exception) {
-      setNotification({
-        message: exception.message,
-        status: 'error'
-      });
-      setTimeout(() => {
-        setNotification(null);
-      }, 5000);
+      dispatch(setErrorNotification(exception.message, 5000));
     }
   };
 
