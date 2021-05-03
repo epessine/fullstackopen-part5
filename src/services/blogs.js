@@ -35,10 +35,16 @@ const like = async (id) => {
   return res.data;
 };
 
+const comment = async (id, comment) => {
+  const res = await axios.post(`${baseUrl}/${id}/comments`, { comment });
+  return res.data;
+};
+
 export default {
   setToken,
   getAll,
   create,
   destroy,
-  like
+  like,
+  comment
 };

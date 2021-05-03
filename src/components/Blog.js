@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSuccessNotification, setErrorNotification } from '../reducers/notificationReducer';
-import { likeBlog, deleteBlog } from '../reducers/blogsReducer';
+import { likeBlog, deleteBlog, commentBlog } from '../reducers/blogsReducer';
 import { useParams, useHistory } from 'react-router-dom';
 
 const Blog = () => {
+  const [comment, setComment] = useState('');
   const { id } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -36,6 +37,15 @@ const Blog = () => {
     }
   };
 
+  const handleCreateComment = async (e) => {
+    e.preventDefault();
+    try {
+      await dispatch(commentBlog(id, comment));
+    } catch (exception) {
+      dispatch(setErrorNotification(exception.message, 5000));
+    }
+  };
+
   if (!blog) return null;
   return (
     <div>
@@ -46,6 +56,22 @@ const Blog = () => {
       <span id="likes-counter">{blog.likes}</span><button onClick={addLike}>like</button><br/>
       <span>{`added by ${blog.user.name}`}<br/></span>
       <button onClick={destroyBlog}>remove</button>
+      <h3>comments</h3>
+      <form onSubmit={handleCreateComment}>
+        <input
+          type="text"
+          value={comment}
+          onChange={({ target }) => setComment(target.value)}
+        />
+        <button
+          type="submit"
+        >add comment</button>
+      </form>
+      <ul>
+        {blog.comments.map((comment, index) =>
+          <li key={index}>{comment}</li>
+        )}
+      </ul>
     </div>
   );
 };
