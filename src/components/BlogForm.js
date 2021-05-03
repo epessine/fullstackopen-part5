@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setSuccessNotification, setErrorNotification } from '../reducers/notificationReducer';
 import { addBlog, initializeBlogs } from '../reducers/blogsReducer';
+import { TextField, Button } from '@material-ui/core';
 
 const BlogForm = ({ blogFormRef }) => {
   const dispatch = useDispatch();
@@ -27,39 +28,40 @@ const BlogForm = ({ blogFormRef }) => {
   return (
     <form onSubmit={handleCreateBlog}>
       <h2>create new</h2>
-      <label htmlFor="Title">title: </label>
-      <input
+      <TextField
         required
-        type="text"
         value={title}
+        label="title"
         id="blog-title"
         name="Title"
         onChange={({ target }) => setTitle(target.value)}
       />
       <br/>
-      <label htmlFor="Author">author: </label>
-      <input
-        type="text"
+      <TextField
+        required
         value={author}
+        label="author"
         id="blog-author"
         name="Author"
         onChange={({ target }) => setAuthor(target.value)}
       />
       <br/>
-      <label htmlFor="Url">url: </label>
-      <input
+      <TextField
         required
-        type="text"
         value={url}
+        label="url"
         id="blog-url"
         name="Url"
         onChange={({ target }) => setUrl(target.value)}
       />
       <br/>
-      <button
+      <Button
+        variant="contained"
+        color="primary"
         type="submit"
         id="blog-create"
-      >create</button>
+      > create
+      </Button>
     </form>
   );
 };

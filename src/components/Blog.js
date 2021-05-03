@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setSuccessNotification, setErrorNotification } from '../reducers/notificationReducer';
 import { likeBlog, deleteBlog, commentBlog } from '../reducers/blogsReducer';
 import { useParams, useHistory } from 'react-router-dom';
+import { Typography, Button, TextField, List, ListItem, ListItemText } from '@material-ui/core';
 
 const Blog = () => {
   const [comment, setComment] = useState('');
@@ -49,29 +50,54 @@ const Blog = () => {
   if (!blog) return null;
   return (
     <div>
-      <h2> {`${blog.title} by ${blog.author}`} </h2>
-      <span>
-        <a href={blog.url}>{blog.url}</a><br/>
-      </span>
-      <span id="likes-counter">{blog.likes}</span><button onClick={addLike}>like</button><br/>
-      <span>{`added by ${blog.user.name}`}<br/></span>
-      <button onClick={destroyBlog}>remove</button>
-      <h3>comments</h3>
+      <Typography variant="h4">
+        {`${blog.title} by ${blog.author}`}
+      </Typography>
+      <Typography variant="body1">
+        <a href={blog.url}>{blog.url}</a>
+      </Typography>
+      <Typography variant="body1">
+        {blog.likes}
+        <Button
+          variant='contained'
+          color='primary'
+          size='small'
+          onClick={addLike}
+        > like </Button>
+      </Typography>
+      <Typography variant="body1">
+        {`added by ${blog.user.name}`}
+      </Typography>
+      <Button
+        variant='contained'
+        color='primary'
+        size='small'
+        onClick={destroyBlog}
+      > remove </Button>
+      <Typography variant="h5">
+        comments
+      </Typography>
       <form onSubmit={handleCreateComment}>
-        <input
-          type="text"
+        <TextField
+          required
           value={comment}
+          label="comment"
           onChange={({ target }) => setComment(target.value)}
         />
-        <button
-          type="submit"
-        >add comment</button>
+        <Button
+          variant='contained'
+          color='primary'
+          size='small'
+          type='submit'
+        > add comment </Button>
       </form>
-      <ul>
+      <List component="nav" aria-label="secondary mailbox folders">
         {blog.comments.map((comment, index) =>
-          <li key={index}>{comment}</li>
+          <ListItem key={index} button>
+            <ListItemText primary={comment} />
+          </ListItem>
         )}
-      </ul>
+      </List>
     </div>
   );
 };

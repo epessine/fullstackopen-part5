@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../reducers/userReducer';
+import { Typography, Button } from '@material-ui/core';
 
 const Logout = () => {
   const user = useSelector(state => state.user);
@@ -9,8 +10,16 @@ const Logout = () => {
   if (!user) return null;
   return (
     <span>
-      {user.name} logged in
-      <button onClick={() => { dispatch(logoutUser()); }}>logout</button>
+      <Typography variant="button">
+        {user.name} logged in
+        <Button
+          variant='outlined'
+          color='default'
+          size='small'
+          onClick={() => { dispatch(logoutUser()); }}
+        > logout
+        </Button>
+      </Typography>
     </span>
   );
 };

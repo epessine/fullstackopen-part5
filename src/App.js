@@ -16,6 +16,14 @@ import {
   Route,
   Link
 } from 'react-router-dom';
+import Container from '@material-ui/core/Container';
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  Typography,
+  Divider
+} from '@material-ui/core';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -32,40 +40,54 @@ const App = () => {
   }, []);
 
   return (
-    <Router>
-      <nav>
-        <Link to='/'>blogs</Link> |
-        <Link to='/users'>users</Link> |
-        <Logout />
-      </nav>
-      {user === null ?
-        <div>
-          <h2>login</h2>
-          <Notification />
-          <LoginForm />
-        </div>
-        :
-        <div>
-          <h2>blogs</h2>
-          <Notification />
-          <Switch>
-            <Route exact path='/'>
-              <BlogList />
-            </Route>
-            <Route path='/blogs/:id'>
-              <Blog />
-            </Route>
-            <Route exact path='/users'>
-              <h2>users</h2>
-              <UserList />
-            </Route>
-            <Route path='/users/:id'>
-              <User />
-            </Route>
-          </Switch>
-        </div>
-      }
-    </Router>
+    <Container>
+      <Router>
+        <AppBar position="static">
+          <Toolbar>
+            <Button color="inherit" component={Link} to="/">
+              blog
+            </Button>
+            <Button color="inherit" component={Link} to="/users">
+              users
+            </Button>
+            <Logout />
+          </Toolbar>
+        </AppBar>
+        {user === null ?
+          <div>
+            <Typography variant="h4">
+            login
+            </Typography>
+            <Divider />
+            <Notification />
+            <LoginForm />
+          </div>
+          :
+          <div>
+            <Typography variant="h4">
+              blogs
+            </Typography>
+            <Divider />
+            <Notification />
+            <Switch>
+              <Route exact path='/'>
+                <BlogList />
+              </Route>
+              <Route path='/blogs/:id'>
+                <Blog />
+              </Route>
+              <Route exact path='/users'>
+                <h2>users</h2>
+                <UserList />
+              </Route>
+              <Route path='/users/:id'>
+                <User />
+              </Route>
+            </Switch>
+          </div>
+        }
+      </Router>
+    </Container>
   );
 };
 
